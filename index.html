@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folgefonna Weather Station</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: sans-serif; background: #f4f4f4; color: #333; padding: 24px; }
+        h1 { font-size: 1.5em; margin-bottom: 4px; }
+        .subtitle { color: #888; font-size: 0.9em; margin-bottom: 24px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .card { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+        .card.full { grid-column: 1 / -1; }
+        @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } .card.full { grid-column: 1; } }
+    </style>
+</head>
+<body>
+    <h1>Folgefonna Weather Station</h1>
+    <p class="subtitle" id="updated">Loading...</p>
+
+    <div class="grid">
+        <div class="card"><div id="chart-temp"></div></div>
+        <div class="card"><div id="chart-humidity"></div></div>
+        <div class="card full"><div id="chart-radiation"></div></div>
+        <div class="card"><div id="chart-wind-speed"></div></div>
+        <div class="card"><div id="chart-wind-dir"></div></div>
+        <div class="card"><div id="chart-pressure"></div></div>
+        <div class="card"><div id="chart-snow"></div></div>
+        <div class="card full"><div id="chart-battery"></div></div>
+    </div>
+
+    <script>
+    const COLORS = {
+        Temp1: '#C0392B', Temp2: '#FF8C27',
+        Hum1: '#2980B9', Hum2: '#85C1E9',
+        WindSpeed: '#27AE60', WindMax: '#82E0AA',
+        SWin: '#E8A838', SWout: '#FFDA48', LWin: '#7B2D8B', LWout: '#BFA8D3',
+        Pressure: '#16A085', SnowHeight: '#5D6D7E', BattMin: '#7F8C8D',
+    };
+
+    function layout(ytitle) {
+        return {
+            margin: { t: 10, b: 40, l: 55, r: 10 },
+            xaxis: { type: 'date', showgrid: true, gridcolor: '#eee' },
+            yaxis: { title: ytitle, showgrid: true, gridcolor: '#eee' },
+            legend: { orientation: 'h', y: -0.25 },
+            plot_bgcolor: 'white', paper_bgcolor: 'white',
+            font: { family: 'sans-serif', size: 12 },
+        };
+    }
+
+    function line(t, y, name, dash) {
+        return { x: t, y, name, type: 'scatter', mode: 'lines',
+                 line: { color: COLORS[name], width: 1.5, dash: dash || 'solid' } };
+    }
+
+    const cfg = { responsive: true, displayModeBar: false };
+
+    fetch('data.json')
+        .then(r => r.json())
+        .then(d => {
+            const t = d.t;
+            document.getElementById('updated').textContent =
+                'Last updated: ' + new Date(d.updated).toLocaleString('en-GB');
+
+            Plotly.newPlot('chart-temp',
+                [line(t, d.Temp1, 'Temp1'), line(t, d.Temp2, 'Temp2')],
+                { ...layout('°C'), title: { text: 'Temperature', font: { size: 13 } } }, cfg);
+
+            Plotly.newPlot('chart-humidity',
+                [line(t, d.Hum1, 'Hum1'), line(t, d.Hum2, 'Hum2')],
+                { ...layout('%'), title: { text: 'Humidity', font: { size: 13 } } }, cfg);
+
+            Plotly.newPlot('chart-radiation',
+                [line(t, d.SWin, 'SWin'), line(t, d.SWout, 'SWout'),
+                 line(t, d.LWin, 'LWin'), line(t, d.LWout, 'LWout')],
+                { ...layout('W m⁻²'), title: { text: 'Radiation', font: { size: 13 } } }, cfg);
+
+            Plotly.newPlot('chart-wind-speed',
+                [line(t, d.WindSpeed, 'WindSpeed'), line(t, d.WindMax, 'WindMax', 'dot')],
+                { ...layout('m s⁻¹'), title: { text: 'Wind Speed', font: { size: 13 } } }, cfg);
+
+            Plotly.newPlot('chart-wind-dir',
+                [{ x: t, y: d.WindDir, name: 'WindDir', type: 'scatter', mode: 'markers',
+                   marker: { color: COLORS.Pressure, size: 2 } }],
+                { ...layout('°'), title: { text: 'Wind Direction', font: { size: 13 } } }, cfg);
+
+            Plotly.newPlot('chart-pressure',
+                [line(t, d.Pressure, 'Pressure')],
+                { ...layout('hPa'), title: { text: 'Pressure', font: { size: 13 } } }, cfg);
+
+            Plotly.newPlot('chart-snow',
+                [line(t, d.SnowHeight, 'SnowHeight')],
+                { ...layout('m'), title: { text: 'Snow Height', font: { size: 13 } } }, cfg);
+
+            Plotly.newPlot('chart-battery',
+                [line(t, d.BattMin, 'BattMin')],
+                { ...layout('V'), title: { text: 'Battery Voltage', font: { size: 13 } } }, cfg);
+        })
+        .catch(err => {
+            document.getElementById('updated').textContent = 'Error loading data: ' + err.message;
+        });
+    </script>
+</body>
+</html>
