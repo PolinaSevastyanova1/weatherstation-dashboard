@@ -27,17 +27,15 @@
         <div class="card"><div id="chart-wind-speed"></div></div>
         <div class="card"><div id="chart-wind-dir"></div></div>
         <div class="card"><div id="chart-pressure"></div></div>
-        <div class="card"><div id="chart-snow"></div></div>
-        <div class="card full"><div id="chart-battery"></div></div>
     </div>
 
     <script>
     const COLORS = {
-        Temp1: '#C0392B', Temp2: '#FF8C27',
-        Hum1: '#2980B9', Hum2: '#85C1E9',
+        Temp1: '#C0392B',
+        Hum1: '#2980B9',
         WindSpeed: '#27AE60', WindMax: '#82E0AA',
         SWin: '#E8A838', SWout: '#FFDA48', LWin: '#7B2D8B', LWout: '#BFA8D3',
-        Pressure: '#16A085', SnowHeight: '#5D6D7E', BattMin: '#7F8C8D',
+        Pressure: '#16A085'
     };
 
     function layout(ytitle) {
@@ -66,11 +64,11 @@
                 'Last updated: ' + new Date(d.updated).toLocaleString('en-GB');
 
             Plotly.newPlot('chart-temp',
-                [line(t, d.Temp1, 'Temp1'), line(t, d.Temp2, 'Temp2')],
+                [line(t, d.Temp1, 'Temp1')],
                 { ...layout('°C'), title: { text: 'Temperature', font: { size: 13 } } }, cfg);
 
             Plotly.newPlot('chart-humidity',
-                [line(t, d.Hum1, 'Hum1'), line(t, d.Hum2, 'Hum2')],
+                [line(t, d.Hum1, 'Hum1')],
                 { ...layout('%'), title: { text: 'Humidity', font: { size: 13 } } }, cfg);
 
             Plotly.newPlot('chart-radiation',
@@ -90,14 +88,6 @@
             Plotly.newPlot('chart-pressure',
                 [line(t, d.Pressure, 'Pressure')],
                 { ...layout('hPa'), title: { text: 'Pressure', font: { size: 13 } } }, cfg);
-
-            Plotly.newPlot('chart-snow',
-                [line(t, d.SnowHeight, 'SnowHeight')],
-                { ...layout('m'), title: { text: 'Snow Height', font: { size: 13 } } }, cfg);
-
-            Plotly.newPlot('chart-battery',
-                [line(t, d.BattMin, 'BattMin')],
-                { ...layout('V'), title: { text: 'Battery Voltage', font: { size: 13 } } }, cfg);
         })
         .catch(err => {
             document.getElementById('updated').textContent = 'Error loading data: ' + err.message;
