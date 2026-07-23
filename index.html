@@ -38,10 +38,18 @@
         Pressure: '#16A085'
     };
 
+    let dayStart, dayEnd;
+
     function layout(ytitle) {
         return {
             margin: { t: 10, b: 40, l: 55, r: 10 },
-            xaxis: { type: 'date', showgrid: true, gridcolor: '#eee' },
+            xaxis: {
+                type: 'date',
+                range: [dayStart, dayEnd],
+                tickformat: '%H:%M',
+                dtick: 3 * 3600000,
+                showgrid: true, gridcolor: '#eee'
+            },
             yaxis: { title: ytitle, showgrid: true, gridcolor: '#eee' },
             legend: { orientation: 'h', y: -0.25 },
             plot_bgcolor: 'white', paper_bgcolor: 'white',
@@ -60,8 +68,11 @@
         .then(r => r.json())
         .then(d => {
             const t = d.t;
+            dayStart = d.day_start;
+            dayEnd   = d.day_end;
+            const dateLabel = new Date(d.day_start).toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             document.getElementById('updated').textContent =
-                'Last updated: ' + new Date(d.updated).toLocaleString('en-GB');
+                dateLabel + ' · Last updated: ' + new Date(d.updated).toLocaleTimeString('en-GB');
 
             Plotly.newPlot('chart-temp',
                 [line(t, d.Temp1, 'Temp1')],
