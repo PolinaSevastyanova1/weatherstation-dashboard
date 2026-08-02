@@ -83,7 +83,7 @@
 
             <div class="mini-row">
                 <div class="mini-charts">
-                    <div class="mini-card"><div id="chart-windrose-mini"></div></div>
+                    <div class="mini-card"><img src="windrose.png" alt="Wind rose" style="width:100%;height:auto;display:block;border-radius:4px;"></div>
                     <div class="mini-card"><div id="chart-temp-mini"></div></div>
                 </div>
                 <div class="right-col">
@@ -177,39 +177,6 @@
             document.getElementById('time-rain').textContent        = d.TimeSinceLastRain || '—';
             document.getElementById('altitude-trend').textContent   = d.Altitude_melt_trend || '—';
             document.getElementById('altitude-total-drop').textContent = d.Altitude_total_drop || '—';
-
-            // ── Wind rose (16 sectors, frequency-weighted by wind speed) ──────
-            const nSectors = 16;
-            const sectorDeg = 360 / nSectors;
-            const sectorLabels = Array.from({length: nSectors}, (_, i) =>
-                ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'][i]);
-            const sectorSpeeds = Array(nSectors).fill(0);
-            const sectorCounts = Array(nSectors).fill(0);
-            d.WindDir.forEach((dir, i) => {
-                if (dir !== null && d.WindSpeed[i] !== null) {
-                    const bin = Math.round(dir / sectorDeg) % nSectors;
-                    sectorSpeeds[bin] += d.WindSpeed[i];
-                    sectorCounts[bin]++;
-                }
-            });
-            const sectorAvg = sectorSpeeds.map((s, i) => sectorCounts[i] > 0 ? +(s / sectorCounts[i]).toFixed(2) : 0);
-            Plotly.newPlot('chart-windrose-mini', [{
-                type: 'barpolar',
-                r: sectorAvg,
-                theta: sectorLabels,
-                marker: { color: COLORS.WindSpeed, opacity: 0.85 },
-                name: 'Avg speed (m/s)'
-            }], {
-                polar: {
-                    radialaxis: { visible: true, showticklabels: false },
-                    angularaxis: { direction: 'clockwise', rotation: 90 }
-                },
-                margin: { t: 30, b: 10, l: 10, r: 10 },
-                paper_bgcolor: 'white',
-                font: { family: 'sans-serif', size: 11 },
-                title: { text: 'Wind Rose', font: { size: 13 } },
-                showlegend: false
-            }, cfg);
 
             // ── Temperature — last 48 h ───────────────────────────────────────
             const cutoff48h = new Date(new Date(tEnd) - 48 * 3600 * 1000).toISOString();
