@@ -18,6 +18,11 @@
         .card { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
         .card.full { grid-column: 1 / -1; }
         @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } .card.full { grid-column: 1; } }
+        .header { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px; }
+        .map-card { background: white; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; flex-shrink: 0; width: 280px; }
+        .map-card img { display: block; width: 100%; height: auto; }
+        .header-content { flex: 1; min-width: 0; }
+        @media (max-width: 700px) { .header { flex-direction: column; } .map-card { width: 100%; } }
         .current-conditions { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
         .stat-card { background: white; border-radius: 8px; padding: 16px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); text-align: center; flex: 1; min-width: 120px; }
         .stat-label { color: #888; font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
@@ -26,6 +31,11 @@
     </style>
 </head>
 <body>
+    <div class="header">
+        <div class="map-card">
+            <img src="map.png" alt="Station location map">
+        </div>
+        <div class="header-content">
     <h1>Folgefonna Weather Station</h1>
     <p class="subtitle" id="updated">Loading...</p>
 
@@ -59,6 +69,8 @@
         <div class="info-card"><strong>Altitude Melt Trend</strong><span id="altitude-trend">—</span></div>
         <div class="info-card"><strong>Altitude Total Drop</strong><span id="altitude-total-drop">—</span></div>
     </div>
+        </div><!-- end header-content -->
+    </div><!-- end header -->
 
     <div class="grid">
         <div class="card"><div id="chart-temp"></div></div>
