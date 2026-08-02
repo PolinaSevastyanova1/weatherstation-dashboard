@@ -4,49 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Folgefonna Weather Station</title>
-    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: sans-serif; background: #e8eae8; color: #e8eae8; padding: 24px; }
-        h1 { font-size: 1.5em; margin-bottom: 4px; color: #e8eae8; }
-        .subtitle { color: #9db89d; font-size: 0.9em; margin-bottom: 16px; }
+        body { font-family: sans-serif; background: #f5f0e8; color: #1d401d; padding: 24px; }
+        h1 { font-size: 1.5em; margin-bottom: 4px; color: #1d401d; }
+        .subtitle { color: #415240; font-size: 0.9em; margin-bottom: 16px; }
         .info-row { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
-        .info-card { background: #414042; border-radius: 8px; padding: 12px 16px; font-size: 0.9em; }
-        .info-card strong { display: block; color: #9db89d; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-        .info-card span { font-size: 1.1em; color: #e8eae8; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .card { background: #414042; border-radius: 8px; padding: 16px; }
-        .card.full { grid-column: 1 / -1; }
+        .info-card { background: #e8f4e0; border-radius: 8px; padding: 12px 16px; font-size: 0.9em; }
+        .info-card strong { display: block; color: #415240; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+        .info-card span { font-size: 1.1em; color: #1d401d; }
         .header { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px; }
         .left-col  { display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; width: 280px; }
         .right-col { display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; width: 280px; }
         .header-content { flex: 1; min-width: 0; }
         .mini-row { display: flex; gap: 12px; align-items: flex-start; }
-        .photo-card { background: #414042; border-radius: 8px; overflow: hidden; }
+        .photo-card { background: #e8f4e0; border-radius: 8px; overflow: hidden; }
         .photo-card img { display: block; width: 100%; height: auto; }
-        /* Current conditions */
         .current-conditions { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
-        .stat-card { background: #414042; border-radius: 8px; padding: 16px 20px; text-align: center; flex: 1; min-width: 100px; }
-        .stat-label { color: #9db89d; font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
-        .stat-value { font-size: 2em; font-weight: 600; color: #e8eae8; line-height: 1; }
+        .stat-card { background: #e8f4e0; border-radius: 8px; padding: 16px 20px; text-align: center; flex: 1; min-width: 100px; }
+        .stat-label { color: #415240; font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+        .stat-value { font-size: 2em; font-weight: 600; color: #1d401d; line-height: 1; }
         .stat-unit  { color: #78a057; font-size: 0.85em; margin-top: 4px; }
-        /* Mini charts row */
         .mini-charts { display: flex; gap: 12px; }
-        .mini-card { background: #414042; border-radius: 8px; padding: 8px; flex: 1; min-width: 0; }
+        .mini-card { background: #e8f4e0; border-radius: 8px; padding: 8px; flex: 1; min-width: 0; }
         @media (max-width: 900px) { .header { flex-wrap: wrap; } .left-col, .right-col { width: 100%; flex-direction: row; } }
-        @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } .card.full { grid-column: 1; } .mini-charts { flex-direction: column; } }
+        @media (max-width: 700px) { .mini-charts { flex-direction: column; } }
     </style>
 </head>
 <body>
     <div class="header">
-        <!-- Left column: logo + map + station photo -->
         <div class="left-col">
             <div class="photo-card"><img src="logo.png" alt="Logo"></div>
             <div class="photo-card"><img src="map.png" alt="Station location map"></div>
             <div class="photo-card"><img src="station.jpg" alt="Weather station photo"></div>
         </div>
 
-        <!-- Title + everything to the right of the left col -->
         <div class="header-content">
             <h1>Folgefonna Weather Station</h1>
             <p class="subtitle" id="updated">Loading...</p>
@@ -85,7 +77,7 @@
             <div class="mini-row">
                 <div class="mini-charts">
                     <div class="mini-card"><img src="windrose.png" alt="Wind rose" style="width:100%;height:auto;display:block;border-radius:4px;"></div>
-                    <div class="mini-card"><div id="chart-temp-mini"></div></div>
+                    <div class="mini-card"><img src="temp_pressure_plot.png" alt="Temperature and pressure" style="width:100%;height:auto;display:block;border-radius:4px;"></div>
                 </div>
                 <div class="right-col">
                     <div class="photo-card"><img src="setup1.jpg" alt="Setup 1"></div>
@@ -95,52 +87,7 @@
         </div>
     </div>
 
-    <div class="grid">
-        <div class="card"><div id="chart-temp"></div></div>
-        <div class="card"><div id="chart-humidity"></div></div>
-        <div class="card full"><div id="chart-radiation"></div></div>
-        <div class="card"><div id="chart-wind-speed"></div></div>
-        <div class="card"><div id="chart-wind-dir"></div></div>
-        <div class="card"><div id="chart-pressure"></div></div>
-        <div class="card"><div id="chart-altitude"></div></div>
-        <div class="card"><div id="chart-albedo"></div></div>
-        <div class="card"><div id="chart-clearness"></div></div>
-    </div>
-
     <script>
-    const COLORS = {
-        Temp1: '#78a057',
-        Hum1: '#e8eae8',
-        WindSpeed: '#78a057', WindMax: '#9db89d',
-        SWin: '#78a057', SWout: '#e8eae8', LWin: '#9db89d', LWout: '#c5d4b8',
-        Pressure: '#e8eae8',
-        Altitude: '#78a057', AltitudeTrend: '#9db89d',
-        Albedo: '#78a057',
-        ClearnessIndex: '#e8eae8'
-    };
-
-    function layout(ytitle) {
-        return {
-            margin: { t: 10, b: 40, l: 55, r: 10 },
-            xaxis: {
-                type: 'date',
-                tickformat: '%d %b %H:%M',
-                dtick: 12 * 3600000,
-                showgrid: true, gridcolor: '#555',
-                tickfont: { color: '#e8eae8' }
-            },
-            yaxis: { title: { text: ytitle, font: { color: '#9db89d' } }, showgrid: true, gridcolor: '#555', tickfont: { color: '#e8eae8' } },
-            legend: { orientation: 'h', y: -0.3, font: { color: '#e8eae8' } },
-            plot_bgcolor: '#414042', paper_bgcolor: '#414042',
-            font: { family: 'sans-serif', size: 12, color: '#e8eae8' },
-        };
-    }
-
-    function line(t, y, name, dash) {
-        return { x: t, y, name, type: 'scatter', mode: 'lines',
-                 line: { color: COLORS[name], width: 1.5, dash: dash || 'solid' } };
-    }
-
     function lastValid(arr) {
         if (!arr) return null;
         for (let i = arr.length - 1; i >= 0; i--) {
@@ -148,8 +95,6 @@
         }
         return null;
     }
-
-    const cfg = { responsive: true, displayModeBar: false };
 
     fetch('data.json')
         .then(r => r.json())
@@ -161,7 +106,6 @@
             document.getElementById('updated').textContent =
                 startLabel + ' – ' + endLabel + ' · Last updated: ' + new Date(d.updated).toLocaleTimeString('en-GB');
 
-            // Current conditions
             const curTemp      = lastValid(d.Temp1);
             const curHum       = lastValid(d.Hum1);
             const curClearness = lastValid(d.ClearnessIndex);
@@ -176,66 +120,9 @@
 
             const lastSurface = d.SurfaceCondition ? d.SurfaceCondition.filter(s => s && s !== 'nan').pop() || '—' : '—';
             document.getElementById('surface-condition').textContent = lastSurface;
-            document.getElementById('time-rain').textContent        = d.TimeSinceLastRain || '—';
-            document.getElementById('altitude-trend').textContent   = d.Altitude_melt_trend || '—';
+            document.getElementById('time-rain').textContent         = d.TimeSinceLastRain || '—';
+            document.getElementById('altitude-trend').textContent    = d.Altitude_melt_trend || '—';
             document.getElementById('altitude-total-drop').textContent = d.Altitude_total_drop || '—';
-
-            // ── Temperature — last 48 h ───────────────────────────────────────
-            const cutoff48h = new Date(new Date(tEnd) - 48 * 3600 * 1000).toISOString();
-            const tMini    = t.filter(ts => ts >= cutoff48h);
-            const tempMini = d.Temp1.filter((_, i) => t[i] >= cutoff48h);
-            Plotly.newPlot('chart-temp-mini', [{
-                x: tMini, y: tempMini, type: 'scatter', mode: 'lines',
-                line: { color: COLORS.Temp1, width: 1.5 }, showlegend: false
-            }], {
-                margin: { t: 30, b: 35, l: 40, r: 8 },
-                xaxis: { type: 'date', tickformat: '%d %b\n%H:%M', showgrid: true, gridcolor: '#eee', nticks: 4 },
-                yaxis: { title: '°C', showgrid: true, gridcolor: '#eee' },
-                paper_bgcolor: 'white', plot_bgcolor: 'white',
-                font: { family: 'sans-serif', size: 11 },
-                title: { text: 'Temperature (48 h)', font: { size: 13 } }
-            }, cfg);
-
-            // ── Full-grid charts ──────────────────────────────────────────────
-            Plotly.newPlot('chart-temp',
-                [line(t, d.Temp1, 'Temp1')],
-                { ...layout('°C'), title: { text: 'Temperature', font: { size: 13 } } }, cfg);
-
-            Plotly.newPlot('chart-humidity',
-                [line(t, d.Hum1, 'Hum1')],
-                { ...layout('%'), title: { text: 'Humidity', font: { size: 13 } } }, cfg);
-
-            Plotly.newPlot('chart-radiation',
-                [line(t, d.SWin, 'SWin'), line(t, d.SWout, 'SWout'),
-                 line(t, d.LWin, 'LWin'), line(t, d.LWout, 'LWout')],
-                { ...layout('W m⁻²'), title: { text: 'Radiation', font: { size: 13 } } }, cfg);
-
-            Plotly.newPlot('chart-wind-speed',
-                [line(t, d.WindSpeed, 'WindSpeed'), line(t, d.WindMax, 'WindMax', 'dot')],
-                { ...layout('m s⁻¹'), title: { text: 'Wind Speed', font: { size: 13 } } }, cfg);
-
-            Plotly.newPlot('chart-wind-dir',
-                [{ x: t, y: d.WindDir, name: 'WindDir', type: 'scatter', mode: 'markers',
-                   marker: { color: COLORS.Pressure, size: 2 } }],
-                { ...layout('°'), title: { text: 'Wind Direction', font: { size: 13 } } }, cfg);
-
-            Plotly.newPlot('chart-pressure',
-                [line(t, d.Pressure, 'Pressure')],
-                { ...layout('hPa'), title: { text: 'Pressure', font: { size: 13 } } }, cfg);
-
-            Plotly.newPlot('chart-altitude',
-                [line(t, d.Altitude, 'Altitude'), line(t, d.AltitudeTrend, 'AltitudeTrend', 'dash')],
-                { ...layout('m a.s.l.'), title: { text: 'Station Altitude (snow height proxy)', font: { size: 13 } } }, cfg);
-
-            Plotly.newPlot('chart-albedo',
-                [line(t, d.Albedo, 'Albedo')],
-                { ...layout('—'), title: { text: 'Surface Albedo', font: { size: 13 } },
-                  yaxis: { ...layout('—').yaxis, range: [0, 1.05] } }, cfg);
-
-            Plotly.newPlot('chart-clearness',
-                [line(t, d.ClearnessIndex, 'ClearnessIndex')],
-                { ...layout('—'), title: { text: 'Clearness Index', font: { size: 13 } },
-                  yaxis: { ...layout('—').yaxis, range: [0, 1.05] } }, cfg);
         })
         .catch(err => {
             document.getElementById('updated').textContent = 'Error loading data: ' + err.message;
