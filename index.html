@@ -7,40 +7,41 @@
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: sans-serif; background: #f4f4f4; color: #333; padding: 24px; }
-        h1 { font-size: 1.5em; margin-bottom: 4px; }
-        .subtitle { color: #888; font-size: 0.9em; margin-bottom: 16px; }
+        body { font-family: sans-serif; background: #1d401d; color: #e8eae8; padding: 24px; }
+        h1 { font-size: 1.5em; margin-bottom: 4px; color: #e8eae8; }
+        .subtitle { color: #9db89d; font-size: 0.9em; margin-bottom: 16px; }
         .info-row { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
-        .info-card { background: white; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); font-size: 0.9em; }
-        .info-card strong { display: block; color: #555; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-        .info-card span { font-size: 1.1em; color: #222; }
+        .info-card { background: #414042; border-radius: 8px; padding: 12px 16px; font-size: 0.9em; }
+        .info-card strong { display: block; color: #9db89d; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+        .info-card span { font-size: 1.1em; color: #e8eae8; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .card { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+        .card { background: #414042; border-radius: 8px; padding: 16px; }
         .card.full { grid-column: 1 / -1; }
         .header { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px; }
         .left-col  { display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; width: 280px; }
         .right-col { display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; width: 280px; }
         .header-content { flex: 1; min-width: 0; }
         .mini-row { display: flex; gap: 12px; align-items: flex-start; }
-        .photo-card { background: white; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; }
+        .photo-card { background: #414042; border-radius: 8px; overflow: hidden; }
         .photo-card img { display: block; width: 100%; height: auto; }
         /* Current conditions */
         .current-conditions { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
-        .stat-card { background: white; border-radius: 8px; padding: 16px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); text-align: center; flex: 1; min-width: 100px; }
-        .stat-label { color: #888; font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
-        .stat-value { font-size: 2em; font-weight: 600; color: #222; line-height: 1; }
-        .stat-unit  { color: #aaa; font-size: 0.85em; margin-top: 4px; }
+        .stat-card { background: #414042; border-radius: 8px; padding: 16px 20px; text-align: center; flex: 1; min-width: 100px; }
+        .stat-label { color: #9db89d; font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+        .stat-value { font-size: 2em; font-weight: 600; color: #e8eae8; line-height: 1; }
+        .stat-unit  { color: #78a057; font-size: 0.85em; margin-top: 4px; }
         /* Mini charts row */
         .mini-charts { display: flex; gap: 12px; }
-        .mini-card { background: white; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); padding: 8px; flex: 1; min-width: 0; }
+        .mini-card { background: #414042; border-radius: 8px; padding: 8px; flex: 1; min-width: 0; }
         @media (max-width: 900px) { .header { flex-wrap: wrap; } .left-col, .right-col { width: 100%; flex-direction: row; } }
         @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } .card.full { grid-column: 1; } .mini-charts { flex-direction: column; } }
     </style>
 </head>
 <body>
     <div class="header">
-        <!-- Left column: map + station photo -->
+        <!-- Left column: logo + map + station photo -->
         <div class="left-col">
+            <div class="photo-card"><img src="logo.png" alt="Logo"></div>
             <div class="photo-card"><img src="map.png" alt="Station location map"></div>
             <div class="photo-card"><img src="station.jpg" alt="Weather station photo"></div>
         </div>
@@ -108,14 +109,14 @@
 
     <script>
     const COLORS = {
-        Temp1: '#C0392B',
-        Hum1: '#2980B9',
-        WindSpeed: '#27AE60', WindMax: '#82E0AA',
-        SWin: '#E8A838', SWout: '#FFDA48', LWin: '#7B2D8B', LWout: '#BFA8D3',
-        Pressure: '#16A085',
-        Altitude: '#2C3E50', AltitudeTrend: '#7F8C8D',
-        Albedo: '#E67E22',
-        ClearnessIndex: '#3498DB'
+        Temp1: '#78a057',
+        Hum1: '#e8eae8',
+        WindSpeed: '#78a057', WindMax: '#9db89d',
+        SWin: '#78a057', SWout: '#e8eae8', LWin: '#9db89d', LWout: '#c5d4b8',
+        Pressure: '#e8eae8',
+        Altitude: '#78a057', AltitudeTrend: '#9db89d',
+        Albedo: '#78a057',
+        ClearnessIndex: '#e8eae8'
     };
 
     function layout(ytitle) {
@@ -125,12 +126,13 @@
                 type: 'date',
                 tickformat: '%d %b %H:%M',
                 dtick: 12 * 3600000,
-                showgrid: true, gridcolor: '#eee'
+                showgrid: true, gridcolor: '#555',
+                tickfont: { color: '#e8eae8' }
             },
-            yaxis: { title: ytitle, showgrid: true, gridcolor: '#eee' },
-            legend: { orientation: 'h', y: -0.3 },
-            plot_bgcolor: 'white', paper_bgcolor: 'white',
-            font: { family: 'sans-serif', size: 12 },
+            yaxis: { title: { text: ytitle, font: { color: '#9db89d' } }, showgrid: true, gridcolor: '#555', tickfont: { color: '#e8eae8' } },
+            legend: { orientation: 'h', y: -0.3, font: { color: '#e8eae8' } },
+            plot_bgcolor: '#414042', paper_bgcolor: '#414042',
+            font: { family: 'sans-serif', size: 12, color: '#e8eae8' },
         };
     }
 
