@@ -18,11 +18,39 @@
         .card { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
         .card.full { grid-column: 1 / -1; }
         @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } .card.full { grid-column: 1; } }
+        .current-conditions { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .stat-card { background: white; border-radius: 8px; padding: 16px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); text-align: center; flex: 1; min-width: 120px; }
+        .stat-label { color: #888; font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+        .stat-value { font-size: 2em; font-weight: 600; color: #222; line-height: 1; }
+        .stat-unit { color: #aaa; font-size: 0.85em; margin-top: 4px; }
     </style>
 </head>
 <body>
     <h1>Folgefonna Weather Station</h1>
     <p class="subtitle" id="updated">Loading...</p>
+
+    <div class="current-conditions">
+        <div class="stat-card">
+            <div class="stat-label">Temperature</div>
+            <div class="stat-value" id="cur-temp">—</div>
+            <div class="stat-unit">°C</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Humidity</div>
+            <div class="stat-value" id="cur-hum">—</div>
+            <div class="stat-unit">%</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Cloudiness</div>
+            <div class="stat-value" id="cur-cloud">—</div>
+            <div class="stat-unit">%</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Wind Speed</div>
+            <div class="stat-value" id="cur-wind">—</div>
+            <div class="stat-unit">m/s</div>
+        </div>
+    </div>
 
     <div class="info-row">
         <div class="info-card"><strong>Surface Condition</strong><span id="surface-condition">—</span></div>
@@ -76,6 +104,14 @@
                  line: { color: COLORS[name], width: 1.5, dash: dash || 'solid' } };
     }
 
+    function lastValid(arr) {
+        if (!arr) return null;
+        for (let i = arr.length - 1; i >= 0; i--) {
+            if (arr[i] !== null && arr[i] !== undefined) return arr[i];
+        }
+        return null;
+    }
+
     const cfg = { responsive: true, displayModeBar: false };
 
     fetch('data.json')
@@ -87,6 +123,15 @@
             const endLabel   = new Date(tEnd).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
             document.getElementById('updated').textContent =
                 startLabel + ' – ' + endLabel + ' · Last updated: ' + new Date(d.updated).toLocaleTimeString('en-GB');
+
+            const curTemp = lastValid(d.Temp1);
+            const curHum  = lastValid(d.Hum1);
+            const curClearness = lastValid(d.ClearnessIndex);
+            const curWind = lastValid(d.WindSpeed);
+            document.getElementById('cur-temp').textContent  = curTemp      !== null ? curTemp.toFixed(1)                     : '—';
+            document.getElementById('cur-hum').textContent   = curHum       !== null ? Math.round(curHum)                     : '—';
+            document.getElementById('cur-cloud').textContent = curClearness !== null ? Math.round((1 - curClearness) * 100)   : '—';
+            document.getElementById('cur-wind').textContent  = curWind      !== null ? curWind.toFixed(1)                     : '—';
 
             const lastSurface = d.SurfaceCondition ? d.SurfaceCondition.filter(s => s && s !== 'nan').pop() || '—' : '—';
             document.getElementById('surface-condition').textContent = lastSurface;
