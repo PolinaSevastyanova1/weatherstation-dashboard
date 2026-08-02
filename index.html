@@ -17,9 +17,10 @@
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         .card { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
         .card.full { grid-column: 1 / -1; }
-        /* Two-column header */
+        /* Three-column header */
         .header { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px; }
-        .left-col { display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; width: 280px; }
+        .left-col  { display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; width: 280px; }
+        .right-col { display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; width: 280px; }
         .header-content { flex: 1; min-width: 0; }
         .photo-card { background: white; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; }
         .photo-card img { display: block; width: 100%; height: auto; }
@@ -29,13 +30,11 @@
         .stat-label { color: #888; font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
         .stat-value { font-size: 2em; font-weight: 600; color: #222; line-height: 1; }
         .stat-unit  { color: #aaa; font-size: 0.85em; margin-top: 4px; }
-        /* Bottom row: setup photos + mini charts */
-        .bottom-row { display: flex; gap: 12px; align-items: flex-start; }
-        .setup-photos { display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; width: 180px; }
-        .mini-charts { display: flex; gap: 12px; flex: 1; min-width: 0; }
+        /* Mini charts row */
+        .mini-charts { display: flex; gap: 12px; }
         .mini-card { background: white; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); padding: 8px; flex: 1; min-width: 0; }
-        @media (max-width: 900px) { .header { flex-wrap: wrap; } .left-col { width: 100%; flex-direction: row; } }
-        @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } .card.full { grid-column: 1; } .bottom-row { flex-direction: column; } .setup-photos { width: 100%; flex-direction: row; } .mini-charts { flex-direction: column; } }
+        @media (max-width: 900px) { .header { flex-wrap: wrap; } .left-col, .right-col { width: 100%; flex-direction: row; } }
+        @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } .card.full { grid-column: 1; } .mini-charts { flex-direction: column; } }
     </style>
 </head>
 <body>
@@ -82,16 +81,16 @@
                 <div class="info-card"><strong>Altitude Total Drop</strong><span id="altitude-total-drop">—</span></div>
             </div>
 
-            <div class="bottom-row">
-                <div class="setup-photos">
-                    <div class="photo-card"><img src="setup1.jpg" alt="Setup 1"></div>
-                    <div class="photo-card"><img src="setup2.jpg" alt="Setup 2"></div>
-                </div>
-                <div class="mini-charts">
-                    <div class="mini-card"><div id="chart-windrose-mini"></div></div>
-                    <div class="mini-card"><div id="chart-temp-mini"></div></div>
-                </div>
+            <div class="mini-charts">
+                <div class="mini-card"><div id="chart-windrose-mini"></div></div>
+                <div class="mini-card"><div id="chart-temp-mini"></div></div>
             </div>
+        </div>
+
+        <!-- Right column: setup photos, same width as station photo -->
+        <div class="right-col">
+            <div class="photo-card"><img src="setup1.jpg" alt="Setup 1"></div>
+            <div class="photo-card"><img src="setup2.jpg" alt="Setup 2"></div>
         </div>
     </div>
 
