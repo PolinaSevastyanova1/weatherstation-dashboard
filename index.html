@@ -17,11 +17,12 @@
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         .card { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
         .card.full { grid-column: 1 / -1; }
-        /* Three-column header */
         .header { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px; }
         .left-col  { display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; width: 280px; }
         .right-col { display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; width: 280px; }
         .header-content { flex: 1; min-width: 0; }
+        .header-bottom  { display: flex; gap: 20px; align-items: flex-start; }
+        .header-middle  { flex: 1; min-width: 0; }
         .photo-card { background: white; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; }
         .photo-card img { display: block; width: 100%; height: auto; }
         /* Current conditions */
@@ -45,52 +46,56 @@
             <div class="photo-card"><img src="station.jpg" alt="Weather station photo"></div>
         </div>
 
-        <!-- Middle: title, stats, info, mini-charts -->
+        <!-- Title + everything to the right of the left col -->
         <div class="header-content">
             <h1>Folgefonna Weather Station</h1>
             <p class="subtitle" id="updated">Loading...</p>
 
-            <div class="current-conditions">
-                <div class="stat-card">
-                    <div class="stat-label">Temperature</div>
-                    <div class="stat-value" id="cur-temp">—</div>
-                    <div class="stat-unit">°C</div>
+            <!-- Below title: middle content + right photo column side by side -->
+            <div class="header-bottom">
+                <div class="header-middle">
+                    <div class="current-conditions">
+                        <div class="stat-card">
+                            <div class="stat-label">Temperature</div>
+                            <div class="stat-value" id="cur-temp">—</div>
+                            <div class="stat-unit">°C</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Humidity</div>
+                            <div class="stat-value" id="cur-hum">—</div>
+                            <div class="stat-unit">%</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Cloudiness</div>
+                            <div class="stat-value" id="cur-cloud">—</div>
+                            <div class="stat-unit">%</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Wind Speed</div>
+                            <div class="stat-value" id="cur-wind">—</div>
+                            <div class="stat-unit">m/s</div>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-card"><strong>Last Measurement</strong><span id="last-measurement">—</span></div>
+                        <div class="info-card"><strong>Surface Condition</strong><span id="surface-condition">—</span></div>
+                        <div class="info-card"><strong>Time Since Last Rain</strong><span id="time-rain">—</span></div>
+                        <div class="info-card"><strong>Altitude Melt Trend</strong><span id="altitude-trend">—</span></div>
+                        <div class="info-card"><strong>Altitude Total Drop</strong><span id="altitude-total-drop">—</span></div>
+                    </div>
+
+                    <div class="mini-charts">
+                        <div class="mini-card"><div id="chart-windrose-mini"></div></div>
+                        <div class="mini-card"><div id="chart-temp-mini"></div></div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-label">Humidity</div>
-                    <div class="stat-value" id="cur-hum">—</div>
-                    <div class="stat-unit">%</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Cloudiness</div>
-                    <div class="stat-value" id="cur-cloud">—</div>
-                    <div class="stat-unit">%</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Wind Speed</div>
-                    <div class="stat-value" id="cur-wind">—</div>
-                    <div class="stat-unit">m/s</div>
+
+                <div class="right-col">
+                    <div class="photo-card"><img src="setup1.jpg" alt="Setup 1"></div>
+                    <div class="photo-card"><img src="setup2.jpg" alt="Setup 2"></div>
                 </div>
             </div>
-
-            <div class="info-row">
-                <div class="info-card"><strong>Last Measurement</strong><span id="last-measurement">—</span></div>
-                <div class="info-card"><strong>Surface Condition</strong><span id="surface-condition">—</span></div>
-                <div class="info-card"><strong>Time Since Last Rain</strong><span id="time-rain">—</span></div>
-                <div class="info-card"><strong>Altitude Melt Trend</strong><span id="altitude-trend">—</span></div>
-                <div class="info-card"><strong>Altitude Total Drop</strong><span id="altitude-total-drop">—</span></div>
-            </div>
-
-            <div class="mini-charts">
-                <div class="mini-card"><div id="chart-windrose-mini"></div></div>
-                <div class="mini-card"><div id="chart-temp-mini"></div></div>
-            </div>
-        </div>
-
-        <!-- Right column: setup photos, same width as station photo -->
-        <div class="right-col">
-            <div class="photo-card"><img src="setup1.jpg" alt="Setup 1"></div>
-            <div class="photo-card"><img src="setup2.jpg" alt="Setup 2"></div>
         </div>
     </div>
 
