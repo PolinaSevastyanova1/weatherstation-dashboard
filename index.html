@@ -40,38 +40,38 @@
         </div>
 
         <div class="header-content">
-            <h1>Folgefonna Summit Weather Station</h1>
+            <h1>Folgefonna toppværstasjon</h1>
             <p class="subtitle" id="updated">Loading...</p>
 
             <div class="current-conditions">
                 <div class="stat-card">
-                    <div class="stat-label">Temperature</div>
+                    <div class="stat-label">Temperatur</div>
                     <div class="stat-value" id="cur-temp">—</div>
                     <div class="stat-unit">°C</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Humidity</div>
+                    <div class="stat-label">Fuktighet</div>
                     <div class="stat-value" id="cur-hum">—</div>
                     <div class="stat-unit">%</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Cloudiness</div>
+                    <div class="stat-label">Skydekke</div>
                     <div class="stat-value" id="cur-cloud">—</div>
                     <div class="stat-unit">%</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Wind Speed</div>
+                    <div class="stat-label">Vindhastighet</div>
                     <div class="stat-value" id="cur-wind">—</div>
                     <div class="stat-unit">m/s</div>
                 </div>
             </div>
 
             <div class="info-row">
-                <div class="info-card"><strong>Last Measurement</strong><span id="last-measurement">—</span></div>
-                <div class="info-card"><strong>Surface Condition</strong><span id="surface-condition">—</span></div>
-                <div class="info-card"><strong>Time Since Last Rain</strong><span id="time-rain">—</span></div>
-                <div class="info-card"><strong>Altitude Melt Trend</strong><span id="altitude-trend">—</span></div>
-                <div class="info-card"><strong>Altitude Total Drop</strong><span id="altitude-total-drop">—</span></div>
+                <div class="info-card"><strong>Siste måling</strong><span id="last-measurement">—</span></div>
+                <div class="info-card"><strong>Overflatetilstand</strong><span id="surface-condition">—</span></div>
+                <div class="info-card"><strong>Tid siden sist regn</strong><span id="time-rain">—</span></div>
+                <div class="info-card"><strong>Høydesmeltetrend</strong><span id="altitude-trend">—</span></div>
+                <div class="info-card"><strong>Totalt fall i høyden</strong><span id="altitude-total-drop">—</span></div>
             </div>
 
             <div class="mini-row">
@@ -104,7 +104,7 @@
             const startLabel = new Date(tStart).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
             const endLabel   = new Date(tEnd).toLocaleDateString('en-GB',   { day: 'numeric', month: 'short', year: 'numeric' });
             document.getElementById('updated').textContent =
-                startLabel + ' – ' + endLabel + ' · Last updated: ' + new Date(d.updated).toLocaleTimeString('en-GB');
+                startLabel + ' – ' + endLabel + ' · Sist oppdatert: ' + new Date(d.updated).toLocaleTimeString('en-GB');
 
             const curTemp      = lastValid(d.Temp1);
             const curHum       = lastValid(d.Hum1);
