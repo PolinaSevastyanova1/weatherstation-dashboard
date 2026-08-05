@@ -100,7 +100,7 @@
         .then(r => r.json())
         .then(d => {
             const t = d.t;
-            const tStart = t[0], tEnd = t[t.length - 1];
+            const tStart = t[0] + 'Z', tEnd = t[t.length - 1] + 'Z';
             const tz = 'Europe/Oslo';
             const startLabel = new Date(tStart).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: tz });
             const endLabel   = new Date(tEnd).toLocaleDateString('en-GB',   { day: 'numeric', month: 'short', year: 'numeric', timeZone: tz });
