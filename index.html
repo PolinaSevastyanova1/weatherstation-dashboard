@@ -116,8 +116,9 @@
             document.getElementById('cur-cloud').textContent = curClearness !== null ? Math.round((1 - curClearness) * 100) : '—';
             document.getElementById('cur-wind').textContent  = curWind      !== null ? curWind.toFixed(1)                   : '—';
 
+            const tEndFloored = new Date(new Date(tEnd) - (new Date(tEnd) % 3600000));
             document.getElementById('last-measurement').textContent =
-                new Date(tEnd).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: tz });
+                tEndFloored.toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: tz });
 
             const lastSurface = d.SurfaceCondition ? d.SurfaceCondition.filter(s => s && s !== 'nan').pop() || '—' : '—';
             document.getElementById('surface-condition').textContent = lastSurface;
