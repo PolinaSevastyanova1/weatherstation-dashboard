@@ -1,5 +1,5 @@
 {
-    "updated": "2026-08-05T10:36:00.476380",
+    "updated": "2026-08-05T11:05:24.307179",
     "t": [
         "2026-08-02T07:02:00",
         "2026-08-02T07:03:00",
@@ -64848,7 +64848,7 @@
         null,
         null
     ],
-    "TimeSinceLastRain": "0 days 03:43:00",
-    "Altitude_melt_trend": "-0.44 mm/day",
+    "TimeSinceLastRain": "3 timer 43 min siden",
+    "Altitude_melt_trend": "-0.44 mm/dag",
     "Altitude_total_drop": "-4.22 m"
 }
