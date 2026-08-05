@@ -101,10 +101,11 @@
         .then(d => {
             const t = d.t;
             const tStart = t[0], tEnd = t[t.length - 1];
-            const startLabel = new Date(tStart).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-            const endLabel   = new Date(tEnd).toLocaleDateString('en-GB',   { day: 'numeric', month: 'short', year: 'numeric' });
+            const tz = 'Europe/Oslo';
+            const startLabel = new Date(tStart).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: tz });
+            const endLabel   = new Date(tEnd).toLocaleDateString('en-GB',   { day: 'numeric', month: 'short', year: 'numeric', timeZone: tz });
             document.getElementById('updated').textContent =
-                startLabel + ' – ' + endLabel + ' · Sist oppdatert: ' + new Date(d.updated).toLocaleTimeString('en-GB');
+                startLabel + ' – ' + endLabel + ' · Sist oppdatert: ' + new Date(d.updated).toLocaleTimeString('en-GB', { timeZone: tz });
 
             const curTemp      = lastValid(d.Temp1);
             const curHum       = lastValid(d.Hum1);
@@ -116,7 +117,7 @@
             document.getElementById('cur-wind').textContent  = curWind      !== null ? curWind.toFixed(1)                   : '—';
 
             document.getElementById('last-measurement').textContent =
-                new Date(tEnd).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+                new Date(tEnd).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: tz });
 
             const lastSurface = d.SurfaceCondition ? d.SurfaceCondition.filter(s => s && s !== 'nan').pop() || '—' : '—';
             document.getElementById('surface-condition').textContent = lastSurface;
